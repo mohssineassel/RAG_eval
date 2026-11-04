@@ -1,3 +1,5 @@
+from dotenv import load_dotenv, find_dotenv
+load_dotenv(find_dotenv()) 
 import json
 from deepeval.metrics import GEval, FaithfulnessMetric, AnswerRelevancyMetric, ContextualRelevancyMetric
 from deepeval.test_case import LLMTestCase, SingleTurnParams

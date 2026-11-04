@@ -3,9 +3,9 @@
     "retreiver_k": 3,
     "number_of_test_cases": 20,
     "metrics": {
-        "answer_relevancy": 0.98,
+        "answer_relevancy": 0.99,
         "faithfulness": 1.0,
-        "contextual_relevancy": 0.6882467532467532,
-        "correctness": 0.9625274468027589
+        "contextual_relevancy": 0.7028282828282828,
+        "correctness": 0.9526202767676575
     }
 }

@@ -2,7 +2,7 @@ import json
 from statistics import mean
 
 
-with open("evaluated_results3_fastOne.jsonl", "r", encoding="utf-8") as f:
+with open("./versions/v3/evaluated_results3_fastOne.jsonl", "r", encoding="utf-8") as f:
     results = [json.loads(line) for line in f]
 
 experiment = {

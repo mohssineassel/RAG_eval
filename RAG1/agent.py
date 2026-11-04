@@ -24,13 +24,17 @@ def ask(question: str) -> dict:
     result = agent.invoke(
         {"messages": [HumanMessage(content=question)]}
     )  # Invoke the agent with the question
+    structured = result["structured_response"]
     
     structured_response = result["structured_response"]  # Extract the structured response from the result
 
     return {
         "answer": structured_response.answer,  # Return the answer from the structured response
         "context": structured_response.context,  # Return the context from the structured response
+        "llm_cited_context": structured.context,    # what the model claims it used (optional, for debugging)
+        "tool_called": len(tl.retrieved_chunks) > 0,
     }
 
 
-print(ask("What is the main topic of the paper?"))  # Example usage of the ask function
+if __name__ == "__main__":
+    print(ask("What is the main topic of the paper?"))

@@ -1,3 +1,4 @@
+
 from RAG1.agent import ask
 import json
 
@@ -16,8 +17,11 @@ with open("eval_dataset.jsonl", "r", encoding="utf-8") as f:
             "question": question,
             "expected_answer": expected_answer,
             "rag_answer": rag_result["answer"],
-            "rag_context": rag_result["context"]
+            "rag_context": rag_result["context"],
+            "tool_called": rag_result["tool_called"],
         }
+        if not rag_result["tool_called"]:
+            print("  ⚠️ Agent answered without retrieving anything")
 
         results.append(result)
         print(f"RAG Answer: {rag_result['answer']}")

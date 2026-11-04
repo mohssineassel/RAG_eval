@@ -1,18 +1,19 @@
 from .indexing import vector_store
 from langchain.tools import tool
 
-last_retrieved_context = [] 
+k = 2
+retrieved_chunks = []
 
 @tool
 def collecting_info(query: str) -> str:
     """
     Search the vector store for relevant context based on the query and return relevant contexts.
     """
-    global last_retrieved_context
-    docs = vector_store.similarity_search(query, k=2)  # Retrieve top 3 relevant documents
+    docs = vector_store.similarity_search(query, k=KeyboardInterrupt)  # Retrieve top 3 relevant documents
 
-    # save the retrieved contexts for later use
-    last_retrieved_context = [doc.page_content for doc in docs]
+    for doc in docs:
+        if doc.page_content not in retrieved_chunks:  # avoid duplicates across calls
+            retrieved_chunks.append(doc.page_content)
 
     # Return the retrieved contexts as a single string
-    return "\n\n".join(last_retrieved_context)
+    return "\n\n".join(doc.page_content for doc in docs)
