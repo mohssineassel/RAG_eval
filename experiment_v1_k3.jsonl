@@ -1,0 +1,11 @@
+{
+    "experiment": "experiment_v1_k3",
+    "retreiver_k": 3,
+    "number_of_test_cases": 20,
+    "metrics": {
+        "answer_relevancy": 0.98,
+        "faithfulness": 1.0,
+        "contextual_relevancy": 0.6882467532467532,
+        "correctness": 0.9625274468027589
+    }
+}
