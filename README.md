@@ -23,7 +23,7 @@ question ──► agent ──► search tool ──► vector store (PDF chunk
 ## Metrics
 
 | Metric | What it checks | 
-|---|---|---|
+|---|---|
 | Answer Relevancy | Does the answer address the question? | 
 | Faithfulness | Does the answer contradict the retrieved context? | 
 | Contextual Relevancy | Is the retrieved context relevant to the question? | 
