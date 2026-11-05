@@ -1,3 +1,4 @@
+import os
 from deepeval.models import DeepEvalBaseLLM
 
 
@@ -25,3 +26,19 @@ class LangChainJudge(DeepEvalBaseLLM):
 
     def get_model_name(self):
         return self.name
+
+
+def get_judge(provider: str):
+    """Return the DeepEval judge for a provider (None = DeepEval's default OpenAI model)."""
+    if provider == "gemini":
+        from langchain_google_genai import ChatGoogleGenerativeAI
+        name = os.getenv("GEMINI_MODEL")
+        return LangChainJudge(ChatGoogleGenerativeAI(model=name, temperature=0), name)
+    if provider == "groq":
+        from langchain_groq import ChatGroq
+        name = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
+        return LangChainJudge(ChatGroq(model=name, temperature=0, max_retries=8), name, structured_method="json_schema")
+    if provider == "ollama":
+        from deepeval.models import OllamaModel
+        return OllamaModel(model="qwen2.5:3b")
+    return None

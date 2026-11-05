@@ -1,0 +1,23 @@
+{
+    "experiment": "openai_openai_k3",
+    "config": {
+        "name": "openai_openai_k3",
+        "retriever_k": 3,
+        "provider": "openai",
+        "embeddings": "openai",
+        "limit": null
+    },
+    "number_of_test_cases": 20,
+    "metrics": {
+        "answer_relevancy": 1.0,
+        "faithfulness": 1.0,
+        "contextual_relevancy": 0.7520833333333333,
+        "correctness": 0.9753315663339837
+    },
+    "pass_rates": {
+        "answer_relevancy": 1.0,
+        "faithfulness": 1.0,
+        "contextual_relevancy": 0.5,
+        "correctness": 1.0
+    }
+}

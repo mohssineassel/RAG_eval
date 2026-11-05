@@ -1,35 +1,38 @@
+"""
+Compare every experiment saved in experiments/<name>/summary.json.
+
+    uv run python compare_experiments.py              # all experiments
+    uv run python compare_experiments.py k1 k2        # only names containing "k1" or "k2"
+"""
 import json
+import sys
+from pathlib import Path
 
-with open("experiment_v3_k2.jsonl", "r", encoding="utf-8") as f:
-    k2 = json.load(f)
+EXPERIMENTS_DIR = Path(__file__).resolve().parent / "experiments"
 
-with open("experiment_v2_k1.jsonl", "r", encoding="utf-8") as f:
-    k1 = json.load(f)
+filters = sys.argv[1:]
+summaries = []
+for path in sorted(EXPERIMENTS_DIR.glob("*/summary.json")):
+    with open(path, "r", encoding="utf-8") as f:
+        summary = json.load(f)
+    if not filters or any(word in summary["experiment"] for word in filters):
+        summaries.append(summary)
 
-with open("experiment_v1_k3.jsonl", "r", encoding="utf-8") as f:
-    k3 = json.load(f)
+if not summaries:
+    sys.exit(f"No experiments found in {EXPERIMENTS_DIR}")
 
+names = [s["experiment"] for s in summaries]
+width = max(12, *(len(n) + 2 for n in names))
 
 print("\n =========== EXPERIMENT COMPARISON SUMMARY =========")
+print(f"{'Metric':<22}" + "".join(f"{n:<{width}}" for n in names))
+print("-" * (22 + width * len(names)))
 
-print(
-    f"{'Metric':<22}"
-    f"{'k=1':<10}"
-    f"{'k=2':<10}"
-    f"{'k=3':<10}"    
-)
+for metric in summaries[0]["metrics"]:
+    row = f"{metric.replace('_', ' ').title():<22}"
+    for s in summaries:
+        score = s["metrics"].get(metric)
+        row += f"{'-' if score is None else f'{score:.2f}':<{width}}"
+    print(row)
 
-print("-"* 50)
-
-for metric in k3["metrics"]:
-    score_k3 = k3["metrics"][metric]
-    score_k2 = k2["metrics"][metric]
-    score_k1 = k1["metrics"][metric]
-
-    print(
-        f"{metric.replace('_', ' ').title():<22} "
-        f"{score_k3:<10.2f}"
-        f"{score_k2:<10.2f}"
-        f"{score_k1:<10.2f}"
-
-    )
+print(f"{'Test cases':<22}" + "".join(f"{s['number_of_test_cases']:<{width}}" for s in summaries))
