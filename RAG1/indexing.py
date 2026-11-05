@@ -6,9 +6,14 @@ import os
 
 load_dotenv()  # Load environment variables from .env file
 
-if os.getenv("USE_LOCAL") == "true":
+embedding_provider = os.getenv("EMBEDDING_PROVIDER", "openai")
+
+if embedding_provider == "gemini":
+    from langchain_google_genai import GoogleGenerativeAIEmbeddings
+    embedding = GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001")  # free tier
+elif embedding_provider == "ollama":
     from langchain_ollama import OllamaEmbeddings
-    embedding = OllamaEmbeddings(model="nomic-embed-text")
+    embedding = OllamaEmbeddings(model="nomic-embed-text")  # local, fast enough for embeddings
 else:
     from langchain_openai import OpenAIEmbeddings
     embedding = OpenAIEmbeddings(model="text-embedding-3-large")

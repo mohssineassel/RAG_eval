@@ -6,12 +6,25 @@ from deepeval.metrics import GEval, FaithfulnessMetric, AnswerRelevancyMetric, C
 from deepeval.test_case import LLMTestCase, SingleTurnParams
 from deepeval.evaluate import CacheConfig
 from deepeval.evaluate import evaluate, CacheConfig, AsyncConfig
-
+from RAG1.judge import LangChainJudge
 import os
-from deepeval.models import OllamaModel
 
-local = os.getenv("USE_LOCAL") == "true"
-judge = OllamaModel(model="qwen2.5:3b") if os.getenv("USE_LOCAL") == "true" else None
+provider = os.getenv("PROVIDER", "openai")
+
+
+if provider == "gemini":
+    from langchain_google_genai import ChatGoogleGenerativeAI
+    name = os.getenv("GEMINI_MODEL")
+    judge = LangChainJudge(ChatGoogleGenerativeAI(model=name, temperature=0), name)
+elif provider == "groq":
+    from langchain_groq import ChatGroq
+    name = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
+    judge = LangChainJudge(ChatGroq(model=name, temperature=0, max_retries=8), name, structured_method="json_schema")
+elif provider == "ollama":
+    from deepeval.models import OllamaModel
+    judge = OllamaModel(model="qwen2.5:3b")
+else:
+    judge = None 
 
 
 with open("result1.jsonl", "r", encoding="utf-8") as f:
@@ -63,7 +76,8 @@ evaluation_results = evaluate(
         use_cache=False,
         write_cache=False
     ),
-    async_config=AsyncConfig(run_async=not local),
+    # gemini/groq and local ollama can't handle parallel metric calls
+    async_config=AsyncConfig(run_async=provider == "openai"),
 )
 
 evaluated_results = []

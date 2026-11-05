@@ -7,8 +7,17 @@ from .prompt import system_agent_prompt
 from .objects import Answer
 from langchain.agents import create_agent
 from langchain.messages import HumanMessage
+from langchain.agents.structured_output import ToolStrategy
 
-if os.getenv("USE_LOCAL") == "true":
+provider = os.getenv("PROVIDER", "openai")
+
+if provider == "gemini":
+    from langchain_google_genai import ChatGoogleGenerativeAI
+    llm = ChatGoogleGenerativeAI(model=os.getenv("GEMINI_MODEL"), temperature=0)
+elif provider == "groq":
+    from langchain_groq import ChatGroq
+    llm = ChatGroq(model=os.getenv("GROQ_MODEL", "openai/gpt-oss-120b"), temperature=0)
+elif provider == "ollama":
     from langchain_ollama import ChatOllama
     llm = ChatOllama(model="qwen2.5:3b", temperature=0)
 else:
@@ -19,7 +28,9 @@ agent = create_agent(
     model=llm,
     tools=[tl.collecting_info],
     system_prompt=system_agent_prompt,
-    response_format=Answer,
+    # gpt-oss on Groq often emits malformed JSON for the structured-output tool,
+    # so Groq answers in plain text and ask() falls back to the last message.
+    response_format=None if provider == "groq" else ToolStrategy(Answer),
 )
 
 
@@ -36,7 +47,8 @@ def ask(question: str) -> dict:
         answer = structured.answer
     else:
         answer = result["messages"][-1].content  # fallback: the model's plain text reply
-        print("  ⚠️ Structured output failed, using raw text")
+        if provider != "groq":
+            print("  ⚠️ Structured output failed, using raw text")
 
     return {
         "answer": answer,
