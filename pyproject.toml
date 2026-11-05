@@ -1,7 +1,7 @@
 [project]
 name = "rag-eval"
 version = "0.1.0"
-description = "Add your description here"
+description = "A RAG agent and a framework to evaluate answer quality, retrieval and hallucination"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [

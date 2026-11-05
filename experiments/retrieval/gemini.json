@@ -1,0 +1,120 @@
+{
+    "embeddings": "gemini",
+    "number_of_questions": 24,
+    "scores": {
+        "k1": {
+            "hit_rate": 1,
+            "mrr": 1.0
+        },
+        "k2": {
+            "hit_rate": 1,
+            "mrr": 1.0
+        },
+        "k3": {
+            "hit_rate": 1,
+            "mrr": 1.0
+        },
+        "k5": {
+            "hit_rate": 1,
+            "mrr": 1.0
+        }
+    },
+    "per_question": [
+        {
+            "question": "Where do penguins live?",
+            "rank": 1
+        },
+        {
+            "question": "Why can't penguins fly?",
+            "rank": 1
+        },
+        {
+            "question": "How do penguins move through the water?",
+            "rank": 1
+        },
+        {
+            "question": "What helps penguins swim quickly and efficiently?",
+            "rank": 1
+        },
+        {
+            "question": "How do penguins stay warm in cold water?",
+            "rank": 1
+        },
+        {
+            "question": "Why do penguins preen their feathers?",
+            "rank": 1
+        },
+        {
+            "question": "What is countershading in penguins?",
+            "rank": 1
+        },
+        {
+            "question": "How does a penguin's black-and-white coloring help it survive?",
+            "rank": 1
+        },
+        {
+            "question": "What do penguins eat?",
+            "rank": 1
+        },
+        {
+            "question": "Do all penguins eat the same food?",
+            "rank": 1
+        },
+        {
+            "question": "How do penguins hunt for food?",
+            "rank": 1
+        },
+        {
+            "question": "Do all penguins feed close to shore?",
+            "rank": 1
+        },
+        {
+            "question": "Where do many penguins breed?",
+            "rank": 1
+        },
+        {
+            "question": "How do penguin partners recognize one another during courtship?",
+            "rank": 1
+        },
+        {
+            "question": "What materials do penguins use to make nests?",
+            "rank": 1
+        },
+        {
+            "question": "How do emperor penguins incubate their eggs?",
+            "rank": 1
+        },
+        {
+            "question": "How do penguin parents care for their chicks?",
+            "rank": 1
+        },
+        {
+            "question": "What animals prey on penguins?",
+            "rank": 1
+        },
+        {
+            "question": "What human activities threaten penguins?",
+            "rank": 1
+        },
+        {
+            "question": "Why are penguins useful indicators of ocean health?",
+            "rank": 1
+        },
+        {
+            "question": "Why do penguins live at the North Pole?",
+            "rank": 1
+        },
+        {
+            "question": "How far can penguins fly with their wings?",
+            "rank": 1
+        },
+        {
+            "question": "Why do penguins build their nests high up in trees?",
+            "rank": 1
+        },
+        {
+            "question": "Why do emperor penguins lay many eggs at once?",
+            "rank": 1
+        }
+    ]
+}

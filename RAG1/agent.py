@@ -28,8 +28,7 @@ agent = create_agent(
     model=llm,
     tools=[tl.collecting_info],
     system_prompt=system_agent_prompt,
-    # gpt-oss on Groq often emits malformed JSON for the structured-output tool,
-    # so Groq answers in plain text and ask() falls back to the last message.
+    # gpt-oss on Groq often emits malformed JSON for the structured-output tool
     response_format=None if provider == "groq" else ToolStrategy(Answer),
 )
 
@@ -38,21 +37,20 @@ def ask(question: str) -> dict:
     """
     Ask a question to the agent and return the answer plus the chunks actually retrieved.
     """
-    tl.retrieved_chunks.clear()  # reset before each question
-
+    tl.retrieved_chunks.clear()  
     result = agent.invoke({"messages": [HumanMessage(content=question)]})
     structured = result.get("structured_response")
 
     if structured is not None:
         answer = structured.answer
     else:
-        answer = result["messages"][-1].content  # fallback: the model's plain text reply
+        answer = result["messages"][-1].content  
         if provider != "groq":
             print("  ⚠️ Structured output failed, using raw text")
 
     return {
         "answer": answer,
-        "context": list(tl.retrieved_chunks),  # real retriever output
+        "context": list(tl.retrieved_chunks),  
         "tool_called": len(tl.retrieved_chunks) > 0,
     }
 
