@@ -1,12 +1,18 @@
 from dotenv import load_dotenv
 from .file_reader import extract_paragraphs
 from langchain_core.vectorstores import InMemoryVectorStore
-from langchain_openai import OpenAIEmbeddings
+import os
 
 
 load_dotenv()  # Load environment variables from .env file
 
-embedding = OpenAIEmbeddings(model="text-embedding-3-large")  # Initialize OpenAI embeddings
+if os.getenv("USE_LOCAL") == "true":
+    from langchain_ollama import OllamaEmbeddings
+    embedding = OllamaEmbeddings(model="nomic-embed-text")
+else:
+    from langchain_openai import OpenAIEmbeddings
+    embedding = OpenAIEmbeddings(model="text-embedding-3-large")
+
 vector_store = InMemoryVectorStore(embedding)  # Create an in-memory vector store
 
 chunks = extract_paragraphs("pdfs/Penguins_ACL.pdf")  # Extract paragraphs from the PDF

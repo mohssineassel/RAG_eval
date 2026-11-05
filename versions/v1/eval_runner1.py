@@ -5,6 +5,9 @@ import json
 with open("eval_dataset.jsonl", "r", encoding="utf-8") as f:
     dataset = [json.loads(line) for line in f]
 
+    LIMIT = 3   
+    dataset = dataset[:LIMIT] if LIMIT else dataset
+
     results = []
     for test_case in dataset:
         question = test_case["question"]

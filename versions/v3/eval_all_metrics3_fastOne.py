@@ -4,7 +4,11 @@ import json
 from deepeval.metrics import GEval, FaithfulnessMetric, AnswerRelevancyMetric, ContextualRelevancyMetric
 from deepeval.test_case import LLMTestCase, SingleTurnParams
 from deepeval.evaluate import CacheConfig
-from deepeval.evaluate import evaluate
+from deepeval.evaluate import evaluate,CacheConfig, AsyncConfig
+import os
+from deepeval.models import OllamaModel
+local = os.getenv("USE_LOCAL") == "true"
+judge = OllamaModel(model="qwen2.5:3b") if os.getenv("USE_LOCAL") == "true" else None
 
 with open("result3.jsonl", "r", encoding="utf-8") as f:
     results = [json.loads(line) for line in f]
@@ -31,9 +35,9 @@ for i,result in enumerate(results, start=1):
 
     questions_tests.append(test_case)
 
-answer_relevancy = AnswerRelevancyMetric(threshold=0.7)
-faithfulness = FaithfulnessMetric(threshold=0.7)
-contextual_relevancy = ContextualRelevancyMetric(threshold=0.7)
+answer_relevancy = AnswerRelevancyMetric(threshold=0.7, model=judge)
+faithfulness = FaithfulnessMetric(threshold=0.7, model=judge)
+contextual_relevancy = ContextualRelevancyMetric(threshold=0.7, model=judge)
 correctness = GEval(
         name="Correctness",
         criteria = (
@@ -43,7 +47,8 @@ correctness = GEval(
             SingleTurnParams.ACTUAL_OUTPUT,
             SingleTurnParams.EXPECTED_OUTPUT,
         ],
-        threshold=0.7
+        threshold=0.7,
+        model=judge
 )
 
 
@@ -53,7 +58,8 @@ evaluation_results = evaluate(
     cache_config=CacheConfig(
         use_cache=False,
         write_cache=False
-    )
+    ),
+    async_config=AsyncConfig(run_async=not local),
 )
 
 evaluated_results = []

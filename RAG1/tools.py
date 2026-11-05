@@ -9,7 +9,7 @@ def collecting_info(query: str) -> str:
     """
     Search the vector store for relevant context based on the query and return relevant contexts.
     """
-    docs = vector_store.similarity_search(query, k=KeyboardInterrupt)  # Retrieve top 3 relevant documents
+    docs = vector_store.similarity_search(query, k=k)  # Retrieve top 3 relevant documents
 
     for doc in docs:
         if doc.page_content not in retrieved_chunks:  # avoid duplicates across calls

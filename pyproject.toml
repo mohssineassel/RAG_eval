@@ -8,6 +8,7 @@ dependencies = [
     "deepeval>=4.3.3",
     "dotenv>=0.9.9",
     "langchain>=1.4.8",
+    "langchain-ollama>=1.1.0",
     "langchain-openai>=1.7.3",
     "pydantic>=2.14.2",
     "pymupdf>=2.1",
